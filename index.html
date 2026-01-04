@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Morocco Football Millionaire - 18 Card Edition</title>
     <style>
         :root { 
@@ -42,6 +42,7 @@
             display: flex; 
             flex-direction: column;
             z-index: 10; 
+            overflow-y: auto;
         }
         
         .game-active #sidebar { display: none; }
@@ -66,7 +67,7 @@
             box-sizing: border-box; background: rgba(0,0,0,0.5); border-bottom: 2px solid rgba(255,255,255,0.1);
         }
 
-        #score-box { font-size: 3rem; font-weight: bold; color: var(--gold); }
+        #score-box { font-size: 3rem; font-weight: bold; color: var(--gold); white-space: nowrap; }
 
         #inventory { display: flex; gap: 10px; }
         
@@ -81,6 +82,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-color: transparent;
+            flex-shrink: 0;
         }
         .inv-slot.active { opacity: 1; border-color: var(--gold); box-shadow: 0 0 15px var(--gold); }
 
@@ -99,21 +101,24 @@
             flex-direction: column; 
             position: relative; 
             z-index: 5;
+            height: 100%;
         }
 
         #game-board { 
             display: none; 
-            /* Grid: 9 Columns x 3 Rows */
+            /* Grid: 9 Columns x 3 Rows (Desktop) */
             grid-template-columns: repeat(9, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             gap: 15px; padding: 20px;
             height: calc(100vh - var(--hud-height)); 
             box-sizing: border-box;
             justify-items: center; align-items: center;
+            overflow-y: auto;
         }
 
         .card { 
-            width: 9vw; 
+            width: 100%;
+            max-width: 9vw; 
             aspect-ratio: 3857 / 5463; 
             background: var(--morocco-red); 
             border: none;
@@ -147,6 +152,7 @@
             justify-content: flex-start; 
             padding-top: 210px; 
             text-align: center; 
+            width: 100%;
         }
         
         .play-btn { 
@@ -174,6 +180,7 @@
         #modal-overlay { 
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
             z-index: 1000; justify-content: center; align-items: center; 
+            padding: 20px;
         }
 
         /* Generic Modal Content Styles */
@@ -276,12 +283,158 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media screen and (max-width: 1024px) {
+             #game-board {
+                 /* Tablet: 6 columns x 5 rows approx */
+                 grid-template-columns: repeat(6, 1fr);
+                 grid-template-rows: auto;
+             }
+             .card { max-width: 14vw; }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column; /* Stack sidebar and game */
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            #sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 25vh;
+                border-right: none;
+                border-bottom: 4px solid var(--gold);
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            
+            #leaderboard-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            #leaderboard-list li {
+                width: 45%;
+                font-size: 0.8rem;
+                padding: 10px;
+                margin-bottom: 0;
+            }
+
+            #main-container {
+                width: 100%;
+                height: 100%;
+            }
+
+            #home-screen {
+                padding-top: 50px;
+                justify-content: center;
+            }
+            
+            #home-screen h1 {
+                font-size: 2rem !important; /* Force smaller title */
+                margin-bottom: 20px;
+            }
+
+            .play-btn {
+                width: 250px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            #hud {
+                height: auto;
+                min-height: 80px;
+                padding: 10px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            #score-box {
+                width: 100%;
+                text-align: center;
+                font-size: 2rem;
+                margin-bottom: 5px;
+            }
+
+            #inventory {
+                width: 100%;
+                overflow-x: auto; /* Horizontal scroll for items */
+                justify-content: flex-start;
+                padding-bottom: 5px;
+                /* Hide scrollbar for cleaner look */
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            
+            #inventory::-webkit-scrollbar {
+                display: none;
+            }
+
+            .inv-slot {
+                width: 45px;
+                height: 64px;
+            }
+
+            #game-board {
+                /* Mobile Portrait: 3 Columns x 9 Rows */
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: auto; /* Let it flow */
+                padding: 10px;
+                gap: 10px;
+                /* Adjust height to account for mobile HUD */
+                height: calc(100vh - 120px); 
+                overflow-y: auto; /* Vertical Scroll */
+                align-content: start;
+            }
+
+            .card {
+                max-width: none; /* Reset max-width restriction */
+                width: 100%;
+            }
+
+            /* Modal Adjustments for Mobile */
+            .modal-content {
+                width: 95vw !important;
+                padding: 20px;
+                background-size: 100% 100%; /* Stretch background */
+            }
+
+            .feed-layout {
+                flex-direction: column;
+                gap: 15px;
+                padding-right: 0;
+                text-align: center;
+            }
+            
+            .feed-card-img {
+                width: 100px;
+            }
+            
+            .ans-grid {
+                grid-template-columns: 1fr; /* Stack answers */
+                gap: 10px;
+            }
+            
+            .ans-btn {
+                font-size: 1rem;
+                padding: 10px;
+                aspect-ratio: auto;
+                height: 50px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h1 style="text-align: center; color: var(--gold);">TOP SCORES</h1>
+        <h1 style="text-align: center; color: var(--gold); margin: 5px 0; font-size: 1.5rem;">TOP SCORES</h1>
         <ul id="leaderboard-list"></ul>
     </div>
 
@@ -301,8 +454,8 @@
         </div>
 
         <div id="home-screen">
-            <h1 style="font-size: 3.5rem; text-shadow: 2px 2px 10px black;">MOROCCO AFCON QUIZ</h1>
-            <input type="text" id="username" placeholder="ENTER YOUR NAME" style="padding:15px; border-radius:10px; font-size:1.2rem; width:300px; text-align:center; margin-bottom:20px;">
+            <h1 style="font-size: 3.5rem; text-shadow: 2px 2px 10px black; margin: 0 10px;">MOROCCO AFCON QUIZ</h1>
+            <input type="text" id="username" placeholder="ENTER YOUR NAME" style="padding:15px; border-radius:10px; font-size:1.2rem; width:80%; max-width:300px; text-align:center; margin-bottom:20px;">
             <br>
             <button class="play-btn" onclick="startGame()">PLAY</button>
         </div>
@@ -399,7 +552,7 @@
             {q: "قائد سابق لعب لديبورتيفو لاكورونيا؟", a: ["صلاح الدين بصير", "نورالدين النيبت", "حجي", "الزاكي"], c: 1},
             {q: "نادي برتقالي فاز بالكونفدرالية مؤخرًا؟", a: ["حسنية أكادير", "أولمبيك أسفي", "طنجة", "نهضة بركان"], c: 3},
             {q: "الهداف التاريخي للمغرب في كأس العالم؟", a: ["حجي", "يوسف النصيري", "بصير", "خيري"], c: 1},
-            {q: "انتقلت من أنجيه لمارسيليا بعد المونديال؟", a: ["بوفال", "أمرابط", "عز الدين أوناحي", "حارث"], c: 2},
+            {q: "انتقلت من أنجيه لمارسيليا بعد المونديال؟", a: ["bوفال", "أمرابط", "عز الدين أوناحي", "حارث"], c: 2},
             {q: "كلمة شهيرة للركراكي؟", a: ["سير سير", "الكرة ضرب", "ديرو النية", "نربحو"], c: 2},
             {q: "لعبت لتشيلسي وفزت بالأبطال؟", a: ["بنعطية", "حكيمي", "مزراوي", "حكيم زياش"], c: 3},
             {q: "سجل هدف النهائي في إفريقيا 2004؟", a: ["يوسف مختاري", "الشماخ", "حجي", "الزاكي"], c: 0},
