@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morocco Football Millionaire - 18 Card Edition</title>
     <style>
         :root { 
@@ -42,12 +42,11 @@
             display: flex; 
             flex-direction: column;
             z-index: 10; 
-            flex-shrink: 0;
         }
         
         .game-active #sidebar { display: none; }
 
-        #leaderboard-list { list-style: none; padding: 0; overflow-y: auto; }
+        #leaderboard-list { list-style: none; padding: 0; }
         
         #leaderboard-list li { 
             background: url('c.png') no-repeat center center;
@@ -65,10 +64,9 @@
             height: var(--hud-height); width: 100%; display: none; 
             justify-content: space-between; align-items: center; padding: 0 40px;
             box-sizing: border-box; background: rgba(0,0,0,0.5); border-bottom: 2px solid rgba(255,255,255,0.1);
-            flex-shrink: 0;
         }
 
-        #score-box { font-size: 3rem; font-weight: bold; color: var(--gold); white-space: nowrap; }
+        #score-box { font-size: 3rem; font-weight: bold; color: var(--gold); }
 
         #inventory { display: flex; gap: 10px; }
         
@@ -83,7 +81,6 @@
             background-position: center;
             background-repeat: no-repeat;
             background-color: transparent;
-            flex-shrink: 0;
         }
         .inv-slot.active { opacity: 1; border-color: var(--gold); box-shadow: 0 0 15px var(--gold); }
 
@@ -102,7 +99,6 @@
             flex-direction: column; 
             position: relative; 
             z-index: 5;
-            height: 100%;
         }
 
         #game-board { 
@@ -112,14 +108,12 @@
             grid-template-rows: repeat(3, 1fr); 
             gap: 15px; padding: 20px;
             height: calc(100vh - var(--hud-height)); 
-            width: 100%;
             box-sizing: border-box;
             justify-items: center; align-items: center;
         }
 
         .card { 
-            width: 100%; /* Fill the grid cell */
-            /* Removed fixed width, relied on grid */
+            width: 9vw; 
             aspect-ratio: 3857 / 5463; 
             background: var(--morocco-red); 
             border: none;
@@ -151,9 +145,8 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: flex-start; 
-            padding-top: 15%; 
+            padding-top: 210px; 
             text-align: center; 
-            width: 100%;
         }
         
         .play-btn { 
@@ -173,7 +166,6 @@
             color: white;
             padding: 0;
             box-shadow: none;
-            max-width: 80vw;
         }
         
         .play-btn:hover { transform: scale(1.05); }
@@ -182,7 +174,6 @@
         #modal-overlay { 
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
             z-index: 1000; justify-content: center; align-items: center; 
-            padding: 20px;
         }
 
         /* Generic Modal Content Styles */
@@ -285,104 +276,6 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
-
-        /* --- MOBILE RESPONSIVE STYLES (Vertical, Small but same layout) --- */
-        @media screen and (max-width: 768px) {
-            body {
-                flex-direction: column; /* Stack Sidebar on Top */
-                height: 100vh;
-            }
-
-            #sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 120px; /* Small scrollable sidebar at top */
-                padding: 10px;
-                border-right: none;
-                border-bottom: 2px solid var(--gold);
-                flex-direction: row; /* Horizontal layout for leaderboard items */
-                align-items: center;
-                overflow-x: auto; /* Scroll sideways if needed */
-                overflow-y: hidden;
-            }
-            
-            #sidebar h1 {
-                font-size: 1rem;
-                margin: 0 10px 0 0;
-                white-space: nowrap;
-            }
-
-            #leaderboard-list {
-                display: flex;
-                flex-direction: row;
-                gap: 10px;
-                margin: 0;
-            }
-            
-            #leaderboard-list li {
-                padding: 5px 15px;
-                font-size: 0.8rem;
-                margin-bottom: 0;
-                width: 140px;
-                flex-shrink: 0;
-            }
-
-            /* Adjust HUD to be smaller */
-            :root { --hud-height: 80px; }
-            
-            #hud {
-                padding: 5px 10px;
-                flex-wrap: wrap; /* Allow wrapping if needed */
-                justify-content: center;
-                gap: 10px;
-            }
-            
-            #score-box {
-                font-size: 1.5rem;
-            }
-            
-            #inventory {
-                gap: 2px;
-            }
-            
-            .inv-slot {
-                width: 30px;
-                height: 42px;
-            }
-
-            /* Main Game Board - KEEP 9x3 GRID */
-            #game-board {
-                gap: 3px; /* Smaller gap */
-                padding: 5px;
-                /* No change to grid-template-columns: repeat(9, 1fr) inherited from desktop */
-            }
-
-            /* Home Screen Adjustments */
-            #home-screen h1 {
-                font-size: 2rem !important;
-                margin-top: 20px;
-            }
-
-            /* Modal Mobile Fixes */
-            .modal-content {
-                width: 95vw !important;
-                padding: 15px;
-            }
-            
-            .feed-layout {
-                flex-direction: column;
-                padding-right: 0;
-                text-align: center;
-            }
-            
-            .ans-grid {
-                gap: 5px;
-            }
-            
-            .ans-btn {
-                font-size: 0.9rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -409,7 +302,7 @@
 
         <div id="home-screen">
             <h1 style="font-size: 3.5rem; text-shadow: 2px 2px 10px black;">MOROCCO AFCON QUIZ</h1>
-            <input type="text" id="username" placeholder="ENTER YOUR NAME" style="padding:15px; border-radius:10px; font-size:1.2rem; width:80%; max-width:300px; text-align:center; margin-bottom:20px;">
+            <input type="text" id="username" placeholder="ENTER YOUR NAME" style="padding:15px; border-radius:10px; font-size:1.2rem; width:300px; text-align:center; margin-bottom:20px;">
             <br>
             <button class="play-btn" onclick="startGame()">PLAY</button>
         </div>
